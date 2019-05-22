@@ -1,8 +1,8 @@
 #labyrinthe
 
-import modules.obj_in_lab.wall as Wall
-import modules.obj_in_lab.arrival as Arrival
-import modules.obj_in_lab.obstacle as Obstacle
+from modules.obj_in_lab.wall import Wall
+from modules.obj_in_lab.arrival import Arrival
+from modules.obj_in_lab.obstacle import Obstacle
 
 
 class Labyrinthe():
@@ -57,7 +57,7 @@ def from_content_to_lab(content):
             pass
         elif letter in symbols:
             classe = symbols[letter]
-            my_object = classe(x,y)
+            my_object = classe(x, y)
         else :
             pass #penser à coder une erreur
 

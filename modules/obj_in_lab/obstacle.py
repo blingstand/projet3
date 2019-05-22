@@ -1,11 +1,18 @@
-class Obstacle() :
-    """Obstacle are objets that you can find in the laby"""
+class Obstacle:
 
-    name = "obstacle"
-    can_pass = True
-    symbol = ""
+    """Classe représentant tous les obstacles.
 
-    def __init__(self,x,y):
+    Les obstacles sont généralement hérités de cette classe. Elle
+    définit plusieurs méthodes et attributs qu'il faudra peut-être modifier
+    dans les classes filles.
+
+    """
+
+    nom = "obstacle"
+    peut_traverser = True
+    symbole = ""
+
+    def __init__(self, x, y):
         self.x = x
         self.y = y
 

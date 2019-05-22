@@ -1,4 +1,4 @@
-import modules.obj_in_lab.obstacle as Obstacle
+from modules.obj_in_lab.obstacle import Obstacle
 
 class Wall(Obstacle) :
     """Obstacle are objets that you can find in the laby"""
@@ -6,3 +6,4 @@ class Wall(Obstacle) :
     nom = "wall"
     peut_traverser = False
     symbole = "0"
+
