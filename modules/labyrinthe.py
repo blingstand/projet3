@@ -3,7 +3,7 @@
 from modules.obj_in_lab.wall import Wall
 from modules.obj_in_lab.arrival import Arrival
 from modules.obj_in_lab.obstacle import Obstacle
-
+from modules.mac_gyver import MacGiver
 
 class Labyrinthe():
     """Create the Labyrinthe object"""
@@ -20,6 +20,7 @@ class Labyrinthe():
         self.grid = {}
         for obstacle in obstacles :
             self.grid[obstacle.x, obstacle.y] = obstacle
+        # self.mac_gyver =
 
     def __repr__(self):
         return "Bienvenu dans le {}".format(self.nom)
@@ -27,11 +28,11 @@ class Labyrinthe():
     def __str__(self):
         return "Bienvenu dans le {}".format(self.nom)
 
-    def display_laby(self, obstacles):
+    def display_laby(self, obstacles, coordinates_mac_gyver):
         """ Display the laby object according to x and y properties"""
-        # (1, 1): <wall (x=1, y=1)>,
+
         y = 1
-        grid = ""
+        grid = "\t\t"
         while y <= self.limite_y :
             #début de ligne
             x = 1
@@ -39,10 +40,13 @@ class Labyrinthe():
                 try :
                     grid += obstacles[x,y].symbol
                 except :
-                    grid += " "
+                    if (x,y) == (coordinates_mac_gyver.x, coordinates_mac_gyver.y) :
+                        grid += coordinates_mac_gyver.symbol
+                    else :
+                        grid += " "
                 x += 1
             #fin de ligne,
-            grid += "\n"
+            grid += "\n\t\t"
             y += 1
 
         return grid
