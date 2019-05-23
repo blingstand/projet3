@@ -17,15 +17,36 @@ class Labyrinthe():
         """the Labyrinthe is composed by obstacles and MacGiver """
 
         self.nom = "Labyrinthe MacGyver"
-        self.grille = {}
+        self.grid = {}
         for obstacle in obstacles :
-            self.grille[obstacle.x, obstacle.y] = obstacle
+            self.grid[obstacle.x, obstacle.y] = obstacle
 
     def __repr__(self):
         return "Bienvenu dans le {}".format(self.nom)
 
     def __str__(self):
         return "Bienvenu dans le {}".format(self.nom)
+
+    def display_laby(self, obstacles):
+        """ Display the laby object according to x and y properties"""
+        # (1, 1): <wall (x=1, y=1)>,
+        y = 1
+        grid = ""
+        while y <= self.limite_y :
+            #début de ligne
+            x = 1
+            while x <=  self.limite_x :
+                try :
+                    grid += obstacles[x,y].symbol
+                except :
+                    grid += " "
+                x += 1
+            #fin de ligne,
+            grid += "\n"
+            y += 1
+
+        return grid
+
 
 
 def from_content_to_lab(content):
@@ -45,12 +66,12 @@ def from_content_to_lab(content):
             "U": Arrival
         }
 
-    x = 0
-    y = 0
+    x = 1
+    y = 1
 
     for letter in content :
         if letter == "\n" :
-            x = 0
+            x = 1
             y += 1
             continue
         elif letter == " ":

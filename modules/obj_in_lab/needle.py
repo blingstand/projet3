@@ -5,7 +5,7 @@ class Needle() :
 
     name = "needle"
     can_pass = True
-    symbole = "N"
+    symbol = "N"
 
     def __init__(self):
         self.x = "gérer un x aléatoire compris entre 2 et 14 qui appartiendra à un objet 'obstacle' "
