@@ -1,8 +1,9 @@
+from  modules.obj_in_lab.needle import Needle
 class Ether(Needle) :
-    """Obstacle are objets that you can find in the laby"""
+    """Ether is one of the objet mac_gyver has to pick in the labyrinthe"""
 
-    name = "ether"
-    symbol = "P"
+    name = "Ether"
+    symbol = "E"
 
 
 

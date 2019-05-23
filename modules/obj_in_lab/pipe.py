@@ -1,7 +1,8 @@
+from  modules.obj_in_lab.needle import Needle
 class Pipe(Needle) :
-    """Obstacle are objets that you can find in the laby"""
+    """Pipe is one of the objet mac_gyver has to pick in the labyrinthe"""
 
-    name = "pipe"
+    name = "Pipe"
     symbol = "P"
 
 

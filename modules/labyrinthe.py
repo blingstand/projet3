@@ -28,7 +28,7 @@ class Labyrinthe():
     def __str__(self):
         return "Bienvenu dans le {}".format(self.nom)
 
-    def display_laby(self, obstacles, coordinates_mac_gyver):
+    def display_laby(self, obstacles, liste_coordinates):
         """ Display the laby object according to x and y properties"""
 
         y = 1
@@ -40,9 +40,12 @@ class Labyrinthe():
                 try :
                     grid += obstacles[x,y].symbol
                 except :
-                    if (x,y) == (coordinates_mac_gyver.x, coordinates_mac_gyver.y) :
-                        grid += coordinates_mac_gyver.symbol
-                    else :
+                    finish = False
+                    for coordinate in liste_coordinates:
+                        if (x,y) == coordinate[0:2] :
+                            grid += coordinate[2].symbol
+                            finish = True
+                    if not finish :
                         grid += " "
                 x += 1
             #fin de ligne,
