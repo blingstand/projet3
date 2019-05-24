@@ -9,5 +9,6 @@ class Needle(Obstacle) :
     can_pass = True
     symbol = "N"
 
-    def __init__(self, obstacles):
-        self.x, self.y = self.get_random(obstacles)
+    def __init__(self, obstacles, *obstacles_added):
+        self.x, self.y = self.get_random(obstacles, *obstacles_added)
+

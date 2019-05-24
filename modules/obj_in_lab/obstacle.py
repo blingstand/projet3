@@ -27,7 +27,6 @@ class Obstacle:
         """
         x = 1
         y = 1
-
         y = 1
         list_tuples = []
         while y <= self.y_max :
@@ -37,7 +36,6 @@ class Obstacle:
                 try :
                     obstacles[x,y] in obstacles
                     pass
-
                 except :
                     list_tuples.append((x,y))
                 x += 1
@@ -49,8 +47,7 @@ class Obstacle:
 
 
     def __repr__(self):
-        return "<{name} (x={x}, y={y})>".format(name=self.name,
-                x=self.x, y=self.y)
+        return "<{name}>".format(name=self.name)
 
     def __str__(self):
         return "{name} ({x}.{y})".format(name=self.name, x=self.x, y=self.y)

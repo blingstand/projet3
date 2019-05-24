@@ -1,5 +1,5 @@
 from  modules.map_lab import Map
-from  modules.mac_gyver import MacGiver
+from  modules.mac_gyver import MacGyver
 from  modules.obj_in_lab.needle import Needle
 from  modules.obj_in_lab.pipe import Pipe
 from  modules.obj_in_lab.ether import Ether
@@ -7,11 +7,7 @@ import os
 
 #############################################################################
 ## Pour la prochaine fois :
-## 1/ gérer l'affichage du labyrinthe, done
-## 2/ coordonnées aléatoires de mac_gyver, done
-## 3/ positionner mac_gyver done
-## 4/ coordonnées aléatoires des 3 objets done
-## 5/ le positionnement des 3 objets done
+## 1/ coder le déplacement de mac_gyver
 #############################################################################
 
 def launch_laby(datafile):
@@ -28,48 +24,43 @@ def launch_laby(datafile):
         laby = my_map.labyrinthe
         return laby
 
+def place_objects(obstacles):
+    """ Place mac_gyver, needle, pipe, ether """
+
+    print("\n ", "*"*55)
+    list_object = [("mac_giver", MacGyver, "coordinates_mac_gyver"),
+        ("needle", Needle, "coordinates_needle"),
+        ("pipe", Pipe, "coordinates_pipe"),
+        ("ether", Ether, "coordinates_ether")]
+    obs = obstacles
+    for i, j, k in list_object :
+        i = j(obs)
+        k = (i.x, i.y)
+        obs[k] = i
+        if j == Ether :
+            print(i, ": ")
+            print("\n ", "*"*55, "\n")
+        else :
+            print(i, end = ", ")
+    return obs
+
 def main() :
     """display the game """
 
     # create labyrinthe from datafile
     laby = launch_laby("laby1.txt")
 
-    # display
-    liste_coordinates = []
-
-        #mac_gyver
-    mac_gyver = MacGiver(laby.grid)
-    coordinates_mac_gyver = (mac_gyver.x, mac_gyver.y,mac_gyver)
-    print("\n\t\t", mac_gyver, "\n")
-    liste_coordinates.append(coordinates_mac_gyver)
-        #needle
-    needle = Needle(laby.grid)
-    coordinates_needle = (needle.x, needle.y,needle)
-    print("\n\t\t", needle)
-    liste_coordinates.append(coordinates_needle)
-
-        #pipe
-    pipe = Pipe(laby.grid)
-    coordinates_pipe = (pipe.x, pipe.y,pipe)
-    print("\n\t\t", pipe)
-    liste_coordinates.append(coordinates_pipe)
-
-    #ether
-    ether = Ether(laby.grid)
-    coordinates_ether = (ether.x, ether.y,ether)
-    print("\n\t\t", ether, '\n\n')
-    liste_coordinates.append(coordinates_ether)
-
-    # coordinates_pipe = Pipe(laby.grid)
-    # print("\n\t\t", coordinates_pipe)
-    # coordinates_ether = Ether(laby.grid)
-    # print("\n\t\t", coordinates_ether, "\n")
+    obstacles = laby.grid
+    # place the new objects in dico obstacle
+    obstacles = place_objects(obstacles)
 
     #place mac_gyver
-    disp_laby = laby.display_laby(laby.grid, liste_coordinates)
+    disp_laby = laby.display_laby(obstacles)
     print(disp_laby)
 
+    #Mac Gyver movement
+    #mac_gyver.mg_movement(laby.grid)
 
-
+    # os.system("pause")
 if __name__ == "__main__":
     main()
