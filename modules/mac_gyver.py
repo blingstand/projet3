@@ -1,5 +1,5 @@
 from modules.obj_in_lab.obstacle import Obstacle
-import os
+import sys
 
 class MacGyver(Obstacle) :
     """Obstacle are objets that you can find in the laby"""
@@ -26,15 +26,16 @@ class MacGyver(Obstacle) :
 
 
         coordinates = begin_x, begin_y
-        print("Where {} has to go \n".format(mac_gyver),\
-                "> North(N),\n > South(S),\n > East(E),\n > West(W) ? ")
+        print("Where {} has to go ?\n".format(mac_gyver),\
+                "> North(N),South(S), East(E), West(W).\n > Finish(F) ")
         del obstacles[coordinates]
 
         direction = ""
         while True :
             direction = input(">")
-            if direction not in ("N", "S", "E", "W") :
-                pass
+            if direction not in ("N", "S", "E", "W", "F") :
+                print("'N','S','E','W' or 'F'")
+                continue
             elif direction == "N" :
                 new_x = begin_x
                 new_y = begin_y -1
@@ -47,8 +48,9 @@ class MacGyver(Obstacle) :
             elif direction == "E" :
                 new_x = begin_x + 1
                 new_y = begin_y
+            elif direction == "F" :
+                sys.exit()
             new_coordinates = new_x, new_y
-
             can_pass = self._check_mvt_possible(new_coordinates, obstacles)
             if can_pass :
                 obstacles[new_coordinates] = mac_gyver

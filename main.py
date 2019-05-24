@@ -7,7 +7,7 @@ import os
 
 #############################################################################
 ## Pour la prochaine fois :
-## 1/ coder le déplacement de mac_gyver ok
+## 1/ code an order to go out
 #############################################################################
 
 def launch_laby(datafile):
