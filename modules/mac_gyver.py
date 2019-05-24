@@ -13,35 +13,54 @@ class MacGyver(Obstacle) :
     def _check_mvt_possible(self, coordinate, obstacles):
         if coordinate not in obstacles.keys():
             can_pass = True
-            print("can_pass : ", can_pass)
-            return can_pass
+        else :
+            can_pass = False
+        return can_pass
 
 
-    def mg_movement (self, obstacles) :
+    def mg_movement (self, obstacles,mac_gyver) :
         """ Ask a direction to move Mac Gyver"""
 
-        direction = input(">")
-        can_pass = False
-        while can_pass == False and direction not in ("N", "S", "E", "O") :
-            print("Aide : Précisez où Mac Gyver doit aller....\n\
-             > Nord(N),\n > Sud(S),\n > Est(E),\n > Ouest(O).")
+        begin_x = self.x
+        begin_y = self.y
+
+
+        coordinates = begin_x, begin_y
+        print("Where {} has to go \n".format(mac_gyver),\
+                "> North(N),\n > South(S),\n > East(E),\n > West(W) ? ")
+        del obstacles[coordinates]
+
+        direction = ""
+        while True :
             direction = input(">")
-            if direction == "N" :
-                self.y += 1
+            if direction not in ("N", "S", "E", "W") :
+                pass
+            elif direction == "N" :
+                new_x = begin_x
+                new_y = begin_y -1
             elif direction == "S" :
-                self.y -= 1
-            elif direction == "O" :
-                self.x -= 1
+                new_x = begin_x
+                new_y = begin_y + 1
+            elif direction == "W" :
+                new_x = begin_x - 1
+                new_y = begin_y
             elif direction == "E" :
-                self.x += 1
-            coordinate = self.x, self.y
-            print(coordinate)
-            can_pass = self._check_mvt_possible(coordinate, obstacles)
+                new_x = begin_x + 1
+                new_y = begin_y
+            new_coordinates = new_x, new_y
+
+            can_pass = self._check_mvt_possible(new_coordinates, obstacles)
+            if can_pass :
+                obstacles[new_coordinates] = mac_gyver
+                return obstacles
+            else :
+                print("You can't go, there is a wall ! ")
+
+
 
 
     def __repr__(self):
-        return "<{name} (x={x}, y={y})>".format(name=self.name,
-                x=self.x, y=self.y)
+        return "<{name}>".format(name=self.name)
 
     def __str__(self):
         return "{name} ({x}.{y})".format(name=self.name, x=self.x, y=self.y)
