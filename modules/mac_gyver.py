@@ -9,12 +9,28 @@ class MacGyver(Obstacle) :
 
     def __init__(self, obstacles):
         self.x, self.y = self.get_random(obstacles)
+        self.inventory = []
 
-    def _check_mvt_possible(self, coordinate, obstacles):
+    def check_victory(self, inventory):
+        sys.exit()
+
+    def _check_environnement(self, coordinate, obstacles):
         if coordinate not in obstacles.keys():
             can_pass = True
         else :
-            can_pass = False
+            item = obstacles[coordinate].name
+            print(item) #test
+            if item == "Wall" :
+                can_pass = False
+            elif item == "Arrival" :
+                self.check_victory(self.inventory)
+            else :
+                print("mac_gyver picked up {}".format(item))
+                self.inventory.append(item)
+                print(self.inventory)
+                if len(self.inventory) == 3 :
+                    print("I can go out now ! ")
+                can_pass = True
         return can_pass
 
 
@@ -30,8 +46,8 @@ class MacGyver(Obstacle) :
                 "> North(N),South(S), East(E), West(W).\n > Finish(F) ")
         del obstacles[coordinates]
 
-        print("coordinates : ", type(coordinates))
-        print("obstacles : ", type(obstacles))
+        # print("coordinates : ", type(coordinates))
+        # print("obstacles : ", type(obstacles))
 
         direction = ""
         while True :
@@ -54,10 +70,9 @@ class MacGyver(Obstacle) :
             elif direction == "F" :
                 sys.exit()
             new_coordinates = mac_gyver.x, mac_gyver.y
-            can_pass = self._check_mvt_possible(new_coordinates, obstacles)
+            can_pass = self._check_environnement(new_coordinates, obstacles)
             if can_pass :
                 obstacles[new_coordinates] = mac_gyver
-                print("return un ", type(obstacles))
                 return obstacles, mac_gyver
             else :
                 print("You can't go, there is a wall ! ")

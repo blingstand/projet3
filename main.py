@@ -7,7 +7,9 @@ import os
 
 #############################################################################
 ## Pour la prochaine fois :
-## 1/ insert the loop to repeat mac_gyver movements
+## 1/ mac_gyver can walk on items (N,P,E)
+## 2/ walking on item pick up it (it disapears)
+## 3/ if mac_gyver pick up a item, this one will appear in inventory
 #############################################################################
 
 def launch_laby(datafile):
@@ -50,7 +52,7 @@ def main() :
     """display the game """
 
     # create labyrinthe from datafile
-    laby = launch_laby("laby1.txt")
+    laby = launch_laby("laby2.txt")
 
     obstacles = laby.grid
 
@@ -72,7 +74,7 @@ def main() :
         return_mg_move = mac_gyver.mg_movement(obstacles,mac_gyver)
         obstacles = return_mg_move[0]
         mac_gyver = return_mg_move[1]
-        print(len(obstacles), mac_gyver)
+        # print(len(obstacles), mac_gyver) #test
         disp_laby = laby.display_laby(obstacles)
         print(disp_laby)
 
