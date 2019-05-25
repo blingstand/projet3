@@ -29,9 +29,7 @@ class MacGyver(Obstacle) :
             elif item == "Arrival" :
                 self.check_victory(self.inventory)
             else :
-                print("mac_gyver picked up {}".format(item))
                 self.inventory.append(item)
-                print(self.inventory)
                 can_pass = True
         return can_pass
 
@@ -53,11 +51,14 @@ class MacGyver(Obstacle) :
         while True :
 
             print("*"*55)
-            if 1 <= len(self.inventory) < 3 :
+            if len(self.inventory) == 0:
+                print("MG : I need to find how to go out !")
+            elif 1 <= len(self.inventory) < 3 :
                 print("Inventory : ", self.inventory)
             elif len(self.inventory) == 3:
-                print("I can go out ! ")
+                print("MG : I can go out ! ")
             direction = input(">")
+
 
             if direction not in ("Z", "S", "D", "Q", "F") :
                 print("Where {} has to go ?\n".format(mac_gyver),\
@@ -84,7 +85,7 @@ class MacGyver(Obstacle) :
                 obstacles[new_coordinates] = mac_gyver
                 return obstacles, mac_gyver
             else :
-                print("You can't go, there is a wall ! ")
+                print("MG : I can't go, there is a wall ! ")
 
 
 

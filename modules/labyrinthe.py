@@ -32,7 +32,7 @@ class Labyrinthe():
         """ Display the laby object according to x and y properties"""
 
         y = 1
-        grid = "\n\n\n\n\n\n\t\t"
+        grid = "\n\n\n\n\n\n\n\t\t"
         while y <= self.limite_y :
             #début de ligne
             x = 1
@@ -51,7 +51,7 @@ class Labyrinthe():
             #fin de ligne,
             grid += "\n\t\t"
             y += 1
-
+        grid += "\n\n\n"
         return grid
 
 
