@@ -12,14 +12,18 @@ class MacGyver(Obstacle) :
         self.inventory = []
 
     def check_victory(self, inventory):
-        sys.exit()
+        if len(inventory) == 3 :
+            print("Congratulation you can go out :) ! ")
+            sys.exit()
+        else :
+            print("The gate keeper saw you and killed you. Game over :( ! ")
+            sys.exit()
 
     def _check_environnement(self, coordinate, obstacles):
         if coordinate not in obstacles.keys():
             can_pass = True
         else :
             item = obstacles[coordinate].name
-            print(item) #test
             if item == "Wall" :
                 can_pass = False
             elif item == "Arrival" :
@@ -28,8 +32,6 @@ class MacGyver(Obstacle) :
                 print("mac_gyver picked up {}".format(item))
                 self.inventory.append(item)
                 print(self.inventory)
-                if len(self.inventory) == 3 :
-                    print("I can go out now ! ")
                 can_pass = True
         return can_pass
 
@@ -42,8 +44,6 @@ class MacGyver(Obstacle) :
 
 
         coordinates = (begin_x, begin_y)
-        print("Where {} has to go ?\n".format(mac_gyver),\
-                "> North(N),South(S), East(E), West(W).\n > Finish(F) ")
         del obstacles[coordinates]
 
         # print("coordinates : ", type(coordinates))
@@ -51,24 +51,33 @@ class MacGyver(Obstacle) :
 
         direction = ""
         while True :
+
+            print("*"*55)
+            if 1 <= len(self.inventory) < 3 :
+                print("Inventory : ", self.inventory)
+            elif len(self.inventory) == 3:
+                print("I can go out ! ")
             direction = input(">")
-            if direction not in ("N", "S", "E", "W", "F") :
-                print("'N','S','E','W' or 'F'")
+
+            if direction not in ("Z", "S", "D", "Q", "F") :
+                print("Where {} has to go ?\n".format(mac_gyver),\
+                "> North(Z),South(S), East(D), West(Q).\n > Finish(F) ")
                 continue
-            elif direction == "N" :
+            elif direction == "Z" :
                 mac_gyver.x = begin_x
                 mac_gyver.y = begin_y -1
             elif direction == "S" :
                 mac_gyver.x = begin_x
                 mac_gyver.y = begin_y + 1
-            elif direction == "W" :
+            elif direction == "Q" :
                 mac_gyver.x = begin_x - 1
                 mac_gyver.y = begin_y
-            elif direction == "E" :
+            elif direction == "D" :
                 mac_gyver.x = begin_x + 1
                 mac_gyver.y = begin_y
             elif direction == "F" :
                 sys.exit()
+
             new_coordinates = mac_gyver.x, mac_gyver.y
             can_pass = self._check_environnement(new_coordinates, obstacles)
             if can_pass :

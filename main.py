@@ -7,9 +7,9 @@ import os
 
 #############################################################################
 ## Pour la prochaine fois :
-## 1/ mac_gyver can walk on items (N,P,E)
-## 2/ walking on item pick up it (it disapears)
-## 3/ if mac_gyver pick up a item, this one will appear in inventory
+## 1/ victory management
+## 2/ change shortcuts to move mac_gyver
+## 3/ display inventory
 #############################################################################
 
 def launch_laby(datafile):
