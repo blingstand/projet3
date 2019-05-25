@@ -21,14 +21,17 @@ class MacGyver(Obstacle) :
     def mg_movement (self, obstacles,mac_gyver) :
         """ Ask a direction to move Mac Gyver"""
 
-        begin_x = self.x
-        begin_y = self.y
+        begin_x = mac_gyver.x
+        begin_y = mac_gyver.y
 
 
-        coordinates = begin_x, begin_y
+        coordinates = (begin_x, begin_y)
         print("Where {} has to go ?\n".format(mac_gyver),\
                 "> North(N),South(S), East(E), West(W).\n > Finish(F) ")
         del obstacles[coordinates]
+
+        print("coordinates : ", type(coordinates))
+        print("obstacles : ", type(obstacles))
 
         direction = ""
         while True :
@@ -37,24 +40,25 @@ class MacGyver(Obstacle) :
                 print("'N','S','E','W' or 'F'")
                 continue
             elif direction == "N" :
-                new_x = begin_x
-                new_y = begin_y -1
+                mac_gyver.x = begin_x
+                mac_gyver.y = begin_y -1
             elif direction == "S" :
-                new_x = begin_x
-                new_y = begin_y + 1
+                mac_gyver.x = begin_x
+                mac_gyver.y = begin_y + 1
             elif direction == "W" :
-                new_x = begin_x - 1
-                new_y = begin_y
+                mac_gyver.x = begin_x - 1
+                mac_gyver.y = begin_y
             elif direction == "E" :
-                new_x = begin_x + 1
-                new_y = begin_y
+                mac_gyver.x = begin_x + 1
+                mac_gyver.y = begin_y
             elif direction == "F" :
                 sys.exit()
-            new_coordinates = new_x, new_y
+            new_coordinates = mac_gyver.x, mac_gyver.y
             can_pass = self._check_mvt_possible(new_coordinates, obstacles)
             if can_pass :
                 obstacles[new_coordinates] = mac_gyver
-                return obstacles
+                print("return un ", type(obstacles))
+                return obstacles, mac_gyver
             else :
                 print("You can't go, there is a wall ! ")
 

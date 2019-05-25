@@ -7,7 +7,7 @@ import os
 
 #############################################################################
 ## Pour la prochaine fois :
-## 1/ code an order to go out
+## 1/ insert the loop to repeat mac_gyver movements
 #############################################################################
 
 def launch_laby(datafile):
@@ -55,10 +55,10 @@ def main() :
     obstacles = laby.grid
 
     # place the new objects in dico obstacle
-    obstacles = place_objects(obstacles)
-    list_object = obstacles[1]
+    return_place_obj = place_objects(obstacles)
+    list_object = return_place_obj[1]
 
-    obstacles = obstacles[0] #refresh obstacles with 4 news
+    obstacles = return_place_obj[0] #refresh obstacles with 4 news
     mac_gyver = list_object[0]
     needle = list_object[1]
     pipe = list_object[2]
@@ -68,9 +68,13 @@ def main() :
     print(disp_laby)
 
     #Mac Gyver movement
-    mac_gyver.mg_movement(laby.grid,mac_gyver)
-    disp_laby = laby.display_laby(obstacles)
-    print(disp_laby)
+    while True :
+        return_mg_move = mac_gyver.mg_movement(obstacles,mac_gyver)
+        obstacles = return_mg_move[0]
+        mac_gyver = return_mg_move[1]
+        print(len(obstacles), mac_gyver)
+        disp_laby = laby.display_laby(obstacles)
+        print(disp_laby)
 
     # os.system("pause")
 if __name__ == "__main__":
