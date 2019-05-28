@@ -6,6 +6,7 @@ class MacGyver(Obstacle) :
 
     name = "MacGiver"
     symbol = "X"
+    pix = "res/mac_gyver.png"
 
     def __init__(self, obstacles):
         self.x, self.y = self.get_random(obstacles)

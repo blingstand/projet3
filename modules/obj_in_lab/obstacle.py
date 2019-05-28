@@ -10,8 +10,9 @@ class Obstacle:
     """
 
     name = "obstacle"
-    can_pass = True
-    symbol = ""
+
+    symbol = " "
+    pix = "res/ground.png"
     x_max = 15
     y_max = 15
     def __init__(self, x, y):

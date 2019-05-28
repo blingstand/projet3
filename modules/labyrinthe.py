@@ -1,5 +1,7 @@
 #labyrinthe
-
+import pygame
+from pygame.locals import *
+import os
 from modules.obj_in_lab.wall import Wall
 from modules.obj_in_lab.arrival import Arrival
 from modules.obj_in_lab.obstacle import Obstacle
@@ -20,7 +22,7 @@ class Labyrinthe():
         self.grid = {}
         for obstacle in obstacles :
             self.grid[obstacle.x, obstacle.y] = obstacle
-        # self.mac_gyver =
+        self.resolution = 680,680
 
     def __repr__(self):
         return "Bienvenu dans le {}".format(self.nom)
@@ -28,31 +30,36 @@ class Labyrinthe():
     def __str__(self):
         return "Bienvenu dans le {}".format(self.nom)
 
-    def display_laby(self, obstacles):
+    def display_laby_pygame(self, obstacles):
         """ Display the laby object according to x and y properties"""
 
-        y = 1
-        grid = "\n\n\n\n\n\n\n\t\t"
-        while y <= self.limite_y :
-            #début de ligne
-            x = 1
-            while x <=  self.limite_x :
-                try :
-                    grid += obstacles[x,y].symbol
-                except :
-                    finish = False
-                    for coordinate in obstacles:
-                        if (x,y) == coordinate[0:2] :
-                            grid += coordinate[2].symbol
-                            finish = True
-                    if not finish :
-                        grid += " "
-                x += 1
-            #fin de ligne,
-            grid += "\n\t\t"
-            y += 1
-        grid += "\n\n\n"
-        return grid
+        #basics pygame
+        pygame.init()
+
+        #Ouverture de la fenêtre Pygame
+        root = pygame.display.set_mode(self.resolution)
+
+        #background
+        background = pygame.image.load("res/background.png")
+        root.blit(background, (40,40))
+
+        for cle in obstacles:
+            cle_pixel = (cle[0]*40, cle[1]*40)
+            pix = pygame.image.load(obstacles[cle].pix)
+            pix.set_colorkey((255,255,255))
+            root.blit(pix, cle_pixel)
+
+        #refresh root
+        pygame.display.flip()
+
+        # infinite loop
+        continuer = 1
+        while continuer:
+            for event in pygame.event.get():    #Attente des événements
+                if event.type == QUIT:
+                    continuer = 0
+
+
 
 
 
