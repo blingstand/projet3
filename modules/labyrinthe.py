@@ -1,7 +1,10 @@
 #labyrinthe
-import pygame
-from pygame.locals import *
+
 import os
+from  modules.mac_gyver import MacGyver
+from  modules.obj_in_lab.needle import Needle
+from  modules.obj_in_lab.pipe import Pipe
+from  modules.obj_in_lab.ether import Ether
 from modules.obj_in_lab.wall import Wall
 from modules.obj_in_lab.arrival import Arrival
 from modules.obj_in_lab.obstacle import Obstacle
@@ -22,7 +25,6 @@ class Labyrinthe():
         self.grid = {}
         for obstacle in obstacles :
             self.grid[obstacle.x, obstacle.y] = obstacle
-        self.resolution = 680,680
 
     def __repr__(self):
         return "Bienvenu dans le {}".format(self.nom)
@@ -30,35 +32,27 @@ class Labyrinthe():
     def __str__(self):
         return "Bienvenu dans le {}".format(self.nom)
 
-    def display_laby_pygame(self, obstacles):
-        """ Display the laby object according to x and y properties"""
+    def place_objects(self, obstacles):
+        """ Place mac_gyver, needle, pipe, ether """
 
-        #basics pygame
-        pygame.init()
-
-        #Ouverture de la fenêtre Pygame
-        root = pygame.display.set_mode(self.resolution)
-
-        #background
-        background = pygame.image.load("res/background.png")
-        root.blit(background, (40,40))
-
-        for cle in obstacles:
-            cle_pixel = (cle[0]*40, cle[1]*40)
-            pix = pygame.image.load(obstacles[cle].pix)
-            pix.set_colorkey((255,255,255))
-            root.blit(pix, cle_pixel)
-
-        #refresh root
-        pygame.display.flip()
-
-        # infinite loop
-        continuer = 1
-        while continuer:
-            for event in pygame.event.get():    #Attente des événements
-                if event.type == QUIT:
-                    continuer = 0
-
+        print("\n ", "*"*55)
+        list_object = [("mac_giver", MacGyver, "coordinates_mac_gyver"),\
+            ("needle", Needle, "coordinates_needle"),\
+            ("pipe", Pipe, "coordinates_pipe"),\
+            ("ether", Ether, "coordinates_ether")]
+        obs = obstacles
+        return_object = []
+        for i, j, k in list_object:
+            i = j(obs)
+            k = (i.x, i.y)
+            obs[k] = i
+            return_object.append(i)
+            if j == Ether:
+                print(i, ": ")
+                print("\n ", "*"*55, "\n")
+            else:
+                print(i, end=", ")
+        return obs, return_object
 
 
 
@@ -77,7 +71,8 @@ def from_content_to_lab(content):
 
     symbols = {
             "0": Wall,
-            "U": Arrival
+            "U": Arrival,
+            " ": Obstacle
         }
 
     x = 1
@@ -88,8 +83,6 @@ def from_content_to_lab(content):
             x = 1
             y += 1
             continue
-        elif letter == " ":
-            pass
         elif letter in symbols:
             classe = symbols[letter]
             my_object = classe(x, y)

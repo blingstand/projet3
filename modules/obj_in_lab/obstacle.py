@@ -9,7 +9,7 @@ class Obstacle:
 
     """
 
-    name = "obstacle"
+    name = "Obstacle"
 
     symbol = " "
     pix = "res/ground.png"
@@ -28,20 +28,15 @@ class Obstacle:
         """
         x = 1
         y = 1
-        y = 1
         list_tuples = []
         while y <= self.y_max :
             #début de ligne
             x = 1
             while x <=  self.x_max :
-                try :
-                    obstacles[x,y] in obstacles
-                    pass
-                except :
+                if obstacles[x,y].name == "Obstacle":
                     list_tuples.append((x,y))
                 x += 1
             y += 1
-
         coordinate = choice(list_tuples)
         return coordinate
 
