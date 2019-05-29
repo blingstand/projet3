@@ -1,12 +1,7 @@
 """ Main.py is my main module that load the game using class objects
 
-    1/ create a labyrinthe object according to datafile (laby1.txt)
-    2/ create a dictionnary with obstacles of my lab
-    3/ add items in the dictionnary
-    4/ create a mac_gyver object
-    5/ display lab
-    6/ initiate the loop for mac_gyver movements in the lab
-
+    mac_gyver can move and let a ground rect behind him,
+    he is blocked by wall
     """
 
 import os
@@ -72,26 +67,36 @@ def main():
             root.blit(pix, cle_pixel)
         #refresh root
         pygame.display.flip()
+
+        #for later
+        ground = pygame.image.load("res/ground.png").convert()
     # infinite loop
     continuer = 1
     while continuer:
         for event in pygame.event.get():    #Attente des événements
-            old_mac_pos = mac_pos
             if event.type == KEYDOWN:
+                old_mac_pos = mac_pos
+                can_move = ""
                 if event.key == K_DOWN:
-                    mac_pos = old_mac_pos.move(0,40)
+                    can_move = mac_gyver.mg_movement("S", mac_gyver, obstacles)
                 elif event.key == K_UP:
-                    mac_pos = old_mac_pos.move(0,-40)
+                    can_move = mac_gyver.mg_movement("N", mac_gyver, obstacles)
                 elif event.key == K_LEFT:
-                    mac_pos = old_mac_pos.move(-40,0)
+                    can_move = mac_gyver.mg_movement("W", mac_gyver, obstacles)
                 elif event.key == K_RIGHT:
-                    mac_pos = old_mac_pos.move(40,0)
+                    can_move = mac_gyver.mg_movement("E", mac_gyver, obstacles)
 
-            ground = pygame.image.load("res/ground.png").convert()
-            root.blit(ground, old_mac_pos)
-            root.blit(mac_gyver_pix, mac_pos)
+                if can_move:
+                    print("ok", mac_gyver)
+                    obstacles = can_move[0]
+                    mac_gyver = can_move[1]
+                    mac_pos = mac_gyver.x *40, mac_gyver.y *40
+                    root.blit(mac_gyver_pix, mac_pos)
+                    root.blit(ground, old_mac_pos)
+
+                else :
+                    continue
             pygame.display.flip()
-
             if event.type == QUIT:
                 continuer = 0
 
