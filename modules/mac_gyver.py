@@ -1,5 +1,9 @@
-from modules.obj_in_lab.obstacle import Obstacle
 import sys
+from modules.obj_in_lab.obstacle import Obstacle
+from  modules.obj_in_lab.needle import Needle
+from  modules.obj_in_lab.pipe import Pipe
+from  modules.obj_in_lab.ether import Ether
+
 
 class MacGyver(Obstacle) :
     """Obstacle are objets that you can find in the laby"""
@@ -21,17 +25,19 @@ class MacGyver(Obstacle) :
             sys.exit()
 
     def _check_environnement(self, coordinates, obstacles):
-        if coordinates not in obstacles.keys():
+
+        item = obstacles[coordinates].name
+
+        if item == "Obstacle" :
             can_pass = True
         else :
-            item = obstacles[coordinates].name
             if item == "Wall" :
                 can_pass = False
             elif item == "Arrival" :
                 self.check_victory(self.inventory)
             else :
                 self.inventory.append(item)
-                can_pass = True
+                can_pass = item
         return can_pass
 
 
@@ -64,11 +70,13 @@ class MacGyver(Obstacle) :
             del obstacles[coordinates]
             obstacles[new_coordinates] = mac_gyver
             obstacles[coordinates] = Obstacle
+            if can_pass in ("Needle", "Pipe", "Ether"):
+                can_pass = can_pass.lower()
+                return obstacles, mac_gyver, can_pass
             return obstacles, mac_gyver
         else :
             print("MG : I can't go, there is a wall ! ")
             mac_gyver.x, mac_gyver.y = begin_x, begin_y
-            print("coordinates : ", mac_gyver.x, mac_gyver.y)
 
             return False
 

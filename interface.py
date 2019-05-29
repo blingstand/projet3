@@ -1,7 +1,7 @@
 """ Main.py is my main module that load the game using class objects
 
     mac_gyver can move and let a ground rect behind him,
-    he is blocked by wall
+    he is blocked by wall but can pick the items. Inventory is displayed
     """
 
 import os
@@ -73,7 +73,7 @@ def main():
     # infinite loop
     continuer = 1
     while continuer:
-        for event in pygame.event.get():    #Attente des événements
+        for event in pygame.event.get():
             if event.type == KEYDOWN:
                 old_mac_pos = mac_pos
                 can_move = ""
@@ -87,13 +87,19 @@ def main():
                     can_move = mac_gyver.mg_movement("E", mac_gyver, obstacles)
 
                 if can_move:
-                    print("ok", mac_gyver)
                     obstacles = can_move[0]
                     mac_gyver = can_move[1]
                     mac_pos = mac_gyver.x *40, mac_gyver.y *40
                     root.blit(mac_gyver_pix, mac_pos)
                     root.blit(ground, old_mac_pos)
-
+                    try:
+                        item = can_move[2]
+                        file = 'res/' + item + '.png'
+                        item = pygame.image.load(file)
+                        len_inventory = len(mac_gyver.inventory)
+                        root.blit(item, (len_inventory*40, 15*40))
+                    except:
+                        pass
                 else :
                     continue
             pygame.display.flip()

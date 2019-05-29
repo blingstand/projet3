@@ -65,7 +65,9 @@ def main():
     # add items and mac_gyver in the dictionnary
     return_place_items = place_objects(obstacles)
     list_items = return_place_items[1]
-
+"""
+    à intégrer : obstacle, list_items = place_objects(obstacles)
+"""
     # refresh obstacles with 4 news mg, n, p, e
     obstacles = return_place_items[0]
 
