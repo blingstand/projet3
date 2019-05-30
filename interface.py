@@ -1,7 +1,6 @@
 """ Main.py is my main module that load the game using class objects
 
-    mac_gyver can move and let a ground rect behind him,
-    he is blocked by wall but can pick the items. Inventory is displayed
+    interface now displays messages
     """
 
 import os
@@ -11,6 +10,20 @@ from pygame.locals import *
 from  modules.mac_gyver import MacGyver
 
 resolution = 680,680
+red = (255, 0, 0)
+black = (0, 0, 0)
+blue = (0, 0, 255)
+
+#basics pygame
+pygame.init()
+root = pygame.display.set_mode(resolution)
+font = pygame.font.SysFont("Arial", 25)
+
+def message_to_screen(msg, color):
+    pygame.draw.rect(root, black, [0, 0, 680, 38])
+    screen_text = font.render(msg, True, color)
+    root.blit(screen_text, (0,0))
+
 
 def launch_laby(datafile):
     """open the datafile to show the lab.
@@ -28,7 +41,7 @@ def launch_laby(datafile):
 
 def main():
     """display the game """
-
+    message_to_screen("MG : I need to go out ! ", red)
     # create labyrinthe from datafile
     laby = launch_laby("laby1.txt")
 
@@ -44,10 +57,6 @@ def main():
 
     # create mac_gyver object
     mac_gyver = list_items[0]
-
-    #basics pygame
-    pygame.init()
-    root = pygame.display.set_mode(resolution)
 
     #background
     background = pygame.image.load("res/background.png")
@@ -85,24 +94,33 @@ def main():
                     can_move = mac_gyver.mg_movement("W", mac_gyver, obstacles)
                 elif event.key == K_RIGHT:
                     can_move = mac_gyver.mg_movement("E", mac_gyver, obstacles)
-
                 if can_move:
+                    len_inventory = len(mac_gyver.inventory)
                     obstacles = can_move[0]
                     mac_gyver = can_move[1]
                     mac_pos = mac_gyver.x *40, mac_gyver.y *40
                     root.blit(mac_gyver_pix, mac_pos)
                     root.blit(ground, old_mac_pos)
+                    my_msg = "Objectives : Avoid the guard as long as you do not have all the items. "
+                    if len_inventory == 3 :
+                        my_msg = "Objectives : Now you can face the guard ! "
+                    message_to_screen(my_msg, blue)
+
                     try:
                         item = can_move[2]
                         file = 'res/' + item + '.png'
-                        item = pygame.image.load(file)
-                        len_inventory = len(mac_gyver.inventory)
-                        root.blit(item, (len_inventory*40, 15*40))
+                        item_pix = pygame.image.load(file)
+
+                        root.blit(item_pix, (len_inventory*40, 15*40))
+                        my_msg = "MG : Good point, I've found an item, {}.".format(item)
+                        message_to_screen(my_msg, red)
                     except:
                         pass
+                    finally :
+                        pygame.display.flip()
                 else :
-                    continue
-            pygame.display.flip()
+                    message_to_screen("MG : I can't there is a wall.", red)
+                    pygame.display.flip()
             if event.type == QUIT:
                 continuer = 0
 
