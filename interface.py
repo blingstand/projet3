@@ -57,8 +57,7 @@ def mg_can_move(mac_gyver, can_move, mac_gyver_pix, ground, mac_pos):
 
     ROOT.blit(ground, mac_pos)
 
-    obstacles = can_move[0]
-    mac_gyver = can_move[1]
+    obstacles, mac_gyver  = can_move[0], can_move[1]
     mac_pos = mac_gyver.x *40, mac_gyver.y *40
     ROOT.blit(mac_gyver_pix, mac_pos)
 
@@ -75,12 +74,15 @@ def mg_can_move(mac_gyver, can_move, mac_gyver_pix, ground, mac_pos):
         file = 'res/' + item + '.png'
         item_pix = pygame.image.load(file)
         ROOT.blit(item_pix, (len_inventory*40, 15*40))
+
         my_msg = "MG : Good point, I've found an item, {}.".format(item)
         message_to_screen(my_msg, RED)
+
     except :
         pass
     finally:
         pygame.display.flip()
+
     return mac_gyver, obstacles, mac_pos
 
 ###################################################### MAIN

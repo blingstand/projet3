@@ -1,6 +1,6 @@
-from modules.obj_in_lab.obstacle import Obstacle
+from  modules.obj_in_lab.item import Item
 
-class Needle(Obstacle) :
+class Needle(Item) :
     """Needle is one of the objet mac_gyver has to pick in the labyrinthe
         (not Arya's sword this time)
     """
