@@ -42,16 +42,16 @@ class Labyrinthe():
             ("ether", Ether, "coordinates_ether")]
         obs = obstacles
         return_object = []
-        for i, j, k in list_object:
-            i = j(obs)
-            k = (i.x, i.y)
-            obs[k] = i
-            return_object.append(i)
+        for instance, j, k in list_object:
+            instance = j(obs)
+            k = (instance.x, instance.y)
+            obs[k] = instance
+            return_object.append(instance)
             if j == Ether:
-                print(i, ": ")
+                print(instance, ": ")
                 print("\n ", "*"*55, "\n")
             else:
-                print(i, end=", ")
+                print(instance, end=", ")
         return obs, return_object
 
 

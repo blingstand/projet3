@@ -4,25 +4,31 @@
     """
 
 import os
-from  modules.map_lab import Map
 import pygame
-from pygame.locals import *
-from  modules.mac_gyver import MacGyver
+from  modules.map_lab import Map
 
-resolution = 680,680
-red = (255, 0, 0)
-black = (0, 0, 0)
-blue = (0, 0, 255)
+###################################################### VARIABLES
+RESOLUTION = 680, 680
+RED = (255, 0, 0)
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
+WHITE = (255, 255, 255)
+LAB = "laby2.txt"
 
-#basics pygame
+
+###################################################### PYGAME
 pygame.init()
-root = pygame.display.set_mode(resolution)
-font = pygame.font.SysFont("Arial", 25)
+ROOT = pygame.display.set_mode(RESOLUTION)
+FONT = pygame.font.SysFont("Arial", 25)
 
+
+###################################################### FUNCTIONS
 def message_to_screen(msg, color):
-    pygame.draw.rect(root, black, [0, 0, 680, 38])
-    screen_text = font.render(msg, True, color)
-    root.blit(screen_text, (0,0))
+    """ displays a BLACK rect then a message in the top left corner """
+
+    pygame.draw.rect(ROOT, BLACK, [0, 0, 680, 38]) #rect
+    screen_text = FONT.render(msg, True, color) #msg
+    ROOT.blit(screen_text, (0, 0))
 
 
 def launch_laby(datafile):
@@ -39,42 +45,77 @@ def launch_laby(datafile):
         laby = my_map.labyrinthe
         return laby
 
+def mg_can_move(mac_gyver, can_move, mac_gyver_pix, ground, mac_pos):
+    """ regroupe all the informations to move Mac Gyver
+
+        1/ display ground to old Mac Gyver position
+        2/ refresh obstacles, mac_gyver and mac_pos in order to return them
+        3/ display the objectives based on Mac Gyver movement/position
+        4/ manage the inventory when Mac Gyver picks up an item
+        5/ flip everything
+    """
+
+    ROOT.blit(ground, mac_pos)
+
+    obstacles = can_move[0]
+    mac_gyver = can_move[1]
+    mac_pos = mac_gyver.x *40, mac_gyver.y *40
+    ROOT.blit(mac_gyver_pix, mac_pos)
+
+
+    len_inventory = len(mac_gyver.inventory)
+    if len_inventory == 3:
+        my_msg = "Objectives : Now you can face the guard ! "
+    else:
+        my_msg = "Objectives : Avoid the guard as long as you do not have all the items. "
+    message_to_screen(my_msg, BLUE)
+
+    try:
+        item = can_move[2]
+        file = 'res/' + item + '.png'
+        item_pix = pygame.image.load(file)
+        ROOT.blit(item_pix, (len_inventory*40, 15*40))
+        my_msg = "MG : Good point, I've found an item, {}.".format(item)
+        message_to_screen(my_msg, RED)
+    except :
+        pass
+    finally:
+        pygame.display.flip()
+    return mac_gyver, obstacles, mac_pos
+
+###################################################### MAIN
 def main():
     """display the game """
-    message_to_screen("MG : I need to go out ! ", red)
-    # create labyrinthe from datafile
-    laby = launch_laby("laby1.txt")
 
-    #dico with obstacles of my lab
+    message_to_screen("MG : I need to go out ! ", RED)
+    # create labyrinthe from datafile
+    laby = launch_laby(LAB)
+
+    #create dictionnary with obstacles of my lab
     obstacles = laby.grid
 
-    # add items and mac_gyver in the dictionnary
+    #add items and mac_gyver in the dictionnary
     return_place_items = laby.place_objects(obstacles)
-    list_items = return_place_items[1]
+    obstacles, list_items = return_place_items[0], return_place_items[1]
+    mac_gyver = list_items[0]# create mac_gyver object
 
-    # refresh obstacles with 4 news mg, n, p, e
-    obstacles = return_place_items[0]
-
-    # create mac_gyver object
-    mac_gyver = list_items[0]
-
-    #background
+    #display background
     background = pygame.image.load("res/background.png")
-    root.blit(background, (40,40))
+    ROOT.blit(background, (40, 40))
 
     for cle in obstacles:
         cle_pixel = (cle[0]*40, cle[1]*40)
-        if obstacles[cle] == mac_gyver :
+        if obstacles[cle] == mac_gyver:
             mac_gyver_pix = pygame.image.load(obstacles[cle].pix)
-            mac_gyver_pix.set_colorkey((255,255,255))
-            root.blit(mac_gyver_pix, cle_pixel)
+            mac_gyver_pix.set_colorkey(WHITE)
+            ROOT.blit(mac_gyver_pix, cle_pixel)
             mac_pos = mac_gyver_pix.get_rect()
             mac_pos.x, mac_pos.y = cle_pixel
-        else :
+        else:
             pix = pygame.image.load(obstacles[cle].pix)
-            pix.set_colorkey((255,255,255))
-            root.blit(pix, cle_pixel)
-        #refresh root
+            pix.set_colorkey(WHITE)
+            ROOT.blit(pix, cle_pixel)
+        #refresh ROOT
         pygame.display.flip()
 
         #for later
@@ -83,45 +124,23 @@ def main():
     continuer = 1
     while continuer:
         for event in pygame.event.get():
-            if event.type == KEYDOWN:
-                old_mac_pos = mac_pos
+            if event.type == pygame.KEYDOWN:
                 can_move = ""
-                if event.key == K_DOWN:
+                if event.key == pygame.K_DOWN:
                     can_move = mac_gyver.mg_movement("S", mac_gyver, obstacles)
-                elif event.key == K_UP:
+                elif event.key == pygame.K_UP:
                     can_move = mac_gyver.mg_movement("N", mac_gyver, obstacles)
-                elif event.key == K_LEFT:
+                elif event.key == pygame.K_LEFT:
                     can_move = mac_gyver.mg_movement("W", mac_gyver, obstacles)
-                elif event.key == K_RIGHT:
+                elif event.key == pygame.K_RIGHT:
                     can_move = mac_gyver.mg_movement("E", mac_gyver, obstacles)
                 if can_move:
-                    len_inventory = len(mac_gyver.inventory)
-                    obstacles = can_move[0]
-                    mac_gyver = can_move[1]
-                    mac_pos = mac_gyver.x *40, mac_gyver.y *40
-                    root.blit(mac_gyver_pix, mac_pos)
-                    root.blit(ground, old_mac_pos)
-                    my_msg = "Objectives : Avoid the guard as long as you do not have all the items. "
-                    if len_inventory == 3 :
-                        my_msg = "Objectives : Now you can face the guard ! "
-                    message_to_screen(my_msg, blue)
-
-                    try:
-                        item = can_move[2]
-                        file = 'res/' + item + '.png'
-                        item_pix = pygame.image.load(file)
-
-                        root.blit(item_pix, (len_inventory*40, 15*40))
-                        my_msg = "MG : Good point, I've found an item, {}.".format(item)
-                        message_to_screen(my_msg, red)
-                    except:
-                        pass
-                    finally :
-                        pygame.display.flip()
-                else :
-                    message_to_screen("MG : I can't there is a wall.", red)
+                    mac_gyver, obstacles, mac_pos = mg_can_move(mac_gyver,\
+                     can_move, mac_gyver_pix, ground, mac_pos)
+                else:
+                    message_to_screen("MG : I can't there is a wall.", RED)
                     pygame.display.flip()
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 continuer = 0
 
 
