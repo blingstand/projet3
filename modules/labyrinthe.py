@@ -1,6 +1,5 @@
 #labyrinthe
 
-import os
 from  modules.mac_gyver import MacGyver
 from  modules.obj_in_lab.needle import Needle
 from  modules.obj_in_lab.pipe import Pipe
@@ -13,17 +12,14 @@ from modules.obj_in_lab.obstacle import Obstacle
 class Labyrinthe():
     """Create the Labyrinthe object"""
 
-    #size of my laby 15*15
-    limite_x = 15
-    limite_y = 15
-    liste_3_objects=[]
+    liste_3_objects = []
 
     def __init__(self, obstacles):
         """the Labyrinthe is composed by obstacles and MacGiver """
 
         self.nom = "Labyrinthe MacGyver"
         self.grid = {}
-        for obstacle in obstacles :
+        for obstacle in obstacles:
             self.grid[obstacle.x, obstacle.y] = obstacle
 
     def __repr__(self):
@@ -40,19 +36,20 @@ class Labyrinthe():
             ("needle", Needle, "coordinates_needle"),\
             ("pipe", Pipe, "coordinates_pipe"),\
             ("ether", Ether, "coordinates_ether")]
-        obs = obstacles
+
         return_object = []
-        for instance, j, k in list_object:
-            instance = j(obs)
-            k = (instance.x, instance.y)
-            obs[k] = instance
-            return_object.append(instance)
-            if j == Ether:
-                print(instance, ": ")
+
+        for my_instance, my_class, coordinates_my_instance in list_object:
+            my_instance = my_class(obstacles)
+            coordinates_my_instance = (my_instance.x, my_instance.y)
+            obstacles[coordinates_my_instance] = my_instance
+            return_object.append(my_instance)
+            if my_class == Ether:
+                print(my_instance, ": ")
                 print("\n ", "*"*55, "\n")
             else:
-                print(instance, end=", ")
-        return obs, return_object
+                print(my_instance, end=", ")
+        return obstacles, return_object
 
 
 
@@ -69,28 +66,27 @@ def from_content_to_lab(content):
 
     list_obstacles = []
 
-    symbols = {
-            "0": Wall,
-            "U": Arrival,
-            " ": Obstacle
-        }
+    symbols = {"0": Wall, "U": Arrival, " ": Obstacle}
 
-    x = 1
-    y = 1
+    abscissa = 1
+    ordinate = 1
 
-    for letter in content :
-        if letter == "\n" :
-            x = 1
-            y += 1
+    for letter in content:
+
+        if letter == "\n":
+            abscissa = 1
+            ordinate += 1
             continue
+
         elif letter in symbols:
-            classe = symbols[letter]
-            my_object = classe(x, y)
-        else :
+            my_class = symbols[letter]
+            my_object = my_class(abscissa, ordinate)
+
+        else:
             pass #penser à coder une erreur
 
         list_obstacles.append(my_object)
-        x += 1
+        abscissa += 1
 
     my_lab = Labyrinthe(list_obstacles)
 
