@@ -7,8 +7,7 @@ class Needle(Item) :
 
     name = "Needle"
     symbol = "N"
-    pix = "res/box.png"
 
-    def __init__(self, obstacles, *obstacles_added):
-        self.x, self.y = self.get_random(obstacles, *obstacles_added)
+    def __init__(self, obstacles):
+        self.x, self.y = self.get_random(obstacles)
 

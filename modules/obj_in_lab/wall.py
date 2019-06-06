@@ -5,5 +5,5 @@ class Wall(Obstacle) :
 
     name = "Wall"
     symbol = "0"
-    pix = "res/wall.png"
+    pix = "data/wall.png"
 

@@ -29,7 +29,16 @@ class Labyrinthe():
         return "Bienvenu dans le {}".format(self.nom)
 
     def place_objects(self, obstacles):
-        """ Place mac_gyver, needle, pipe, ether """
+        """ Place mac_gyver, needle, pipe, ether
+
+        1/ takes dict obstacles
+        2/ creates list of instance name, class, coordinates
+        3/ creates 4 instances
+        4/ adds instances to dict obstacles
+        5/ returns obstacles (to refresh is in interface.py),
+        6/ returns return_object (to facilitate access without searching)
+
+        """
 
         print("\n ", "*"*55)
         list_object = [("mac_giver", MacGyver, "coordinates_mac_gyver"),\
@@ -53,9 +62,9 @@ class Labyrinthe():
 
 
 
-
 def from_content_to_lab(content):
     """Take a content and return a my_lab object.
+
 
     1/ create a list of obstacles
     2/ init a x = 0 and y = 0
@@ -89,7 +98,7 @@ def from_content_to_lab(content):
         abscissa += 1
 
     my_lab = Labyrinthe(list_obstacles)
-
+    print("\nVoici mon dico obstacles : 15*15 = 225 couples clé/valeur\n\n", my_lab.grid)
     return my_lab
 
 

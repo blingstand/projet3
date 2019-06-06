@@ -5,5 +5,5 @@ class Arrival(Obstacle) :
 
     name = "Arrival"
     symbol = "U"
-    pix = "res/arrival.png"
+    pix = "data/arrival.png"
 
