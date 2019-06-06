@@ -27,7 +27,6 @@ class Obstacle:
             if obstacles[cle].name == "Obstacle":
                 list_tuples.append((obstacles[cle].x, obstacles[cle].y))
 
-
         coordinate = choice(list_tuples)
         return coordinate
 

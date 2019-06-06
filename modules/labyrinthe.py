@@ -98,7 +98,6 @@ def from_content_to_lab(content):
         abscissa += 1
 
     my_lab = Labyrinthe(list_obstacles)
-    print("\nVoici mon dico obstacles : 15*15 = 225 couples clé/valeur\n\n", my_lab.grid)
     return my_lab
 
 

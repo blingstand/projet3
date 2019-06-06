@@ -139,6 +139,9 @@ def main():
         #for later
         ground = pygame.image.load("data/ground.png").convert()
     # infinite loop
+
+    pygame.key.set_repeat(100, 100)
+
     while True:
         for event in pygame.event.get():
 
